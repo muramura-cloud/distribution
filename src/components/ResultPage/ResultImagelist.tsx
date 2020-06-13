@@ -39,6 +39,16 @@ const ImageItemlist: FC = () => {
         setData(temporaryData as TileData[]);
     }
 
+    const favClick = async (target: string) => {
+        const db = firebase.firestore();
+        const tileDataRef = db.collection('tileData');
+        const favDataRef = tileDataRef.doc(target);
+        //doc()にはドキュメントIDを入れる。ドキュメント🆔とはドキュメントの名前のことである。
+        favDataRef.update({
+            favorite: true
+        });
+    }
+
     useEffect(() => {
         getData(keyword);
     }, []);
@@ -54,7 +64,7 @@ const ImageItemlist: FC = () => {
                                 <img src={tile.image} alt={tile.title} className={classes.tileImage} />
                             </Button>
                             <h3>{tile.title}</h3>
-                            <Button>お気に入り登録</Button>
+                            <Button variant="contained" onClick={() => favClick(tile.title)}>お気に入り登録</Button>
                         </div>
                     ))}
                 </div>
